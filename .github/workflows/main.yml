@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: dart-lang/setup-dart@v1
+
+    - run: dart pub get
+    - run: dart format --output=none --set-exit-if-changed .
+    - run: dart analyze
+    - run: dart test
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
