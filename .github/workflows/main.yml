@@ -26,7 +26,9 @@ jobs:
     - run: flutter test
     - run: flutter build apk --debug --split-per-abi
     - name: Create a Release APK
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "build/app/outputs/apk/debug/*.apk"
-        token: ${{ secrets.TOKEN }}    
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/debug/*.apk"
+          token: ${{ secrets.TOKEN }}
+          skip_tag_creation: true
+    
