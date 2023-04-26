@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lift/Pages/Auth/User/signupscreen.dart';
 
 import 'package:lift/Pages/Intro/GettingStarted/gettingstarted.dart';
-import 'package:lift/Pages/Auth/User/usersauth.dart';
+import 'package:lift/Pages/Auth/User/loginscreen.dart';
 
 import 'Constants/Colors.dart';
 
@@ -29,9 +31,9 @@ class MyApp extends StatelessWidget {
     useMaterial3: true,
     scaffoldBackgroundColor: Rang.black,
     colorScheme: ColorScheme.dark(
-        primary: Rang.spotifyGreen,
-        secondary: Rang.spotifyGreen,
-        onSurface: Rang.spotifyGreen,
+        primary: Rang.blue,
+        secondary: Rang.grey,
+        onSecondary: Rang.textgrey,
         onPrimary: Rang.backgroundWhite),
   );
 
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize: const Size(411, 866),
       splitScreenMode: false,
       builder: ((context, child) {
         return GetMaterialApp(
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       }),
-      child: const UserAuth(),
+      child: const SignUpScreen(),
     );
   }
 }

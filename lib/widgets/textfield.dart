@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lift/Constants/Colors.dart';
 
 class TextFieldApp extends StatefulWidget {
@@ -23,35 +24,32 @@ class _TextFieldAppState extends State<TextFieldApp> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(8.h),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(5)),
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(25.h)),
       child: TextField(
         controller: widget.textEditingController,
         keyboardType: widget.keyboardtype,
         style: TextStyle(
-            fontSize: 17, fontWeight: FontWeight.w500, color: Rang.black),
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.onPrimary),
         maxLines: widget.maxlines,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(8),
+          contentPadding: EdgeInsets.all(7.h),
           focusColor: Theme.of(context).colorScheme.onPrimary,
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary, width: 0.4)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary, width: 0.8)),
-          hintStyle:
-              TextStyle(fontSize: 15, color: Rang.black.withOpacity(0.4)),
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          hintStyle: TextStyle(
+              fontSize: 17.sp,
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.4)),
           hintText: widget.hintText,
           enabled: true,
           labelStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.primary),
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.onSecondary),
           label: Text(widget.label),
         ),
       ),
