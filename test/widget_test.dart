@@ -13,6 +13,6 @@ import 'package:lift/main.dart';
 void main() {
   testWidgets(' test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp());
   });
 }
