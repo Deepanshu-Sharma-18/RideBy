@@ -6,6 +6,7 @@ import 'package:lift/Pages/Auth/User/signupscreen.dart';
 
 import 'package:lift/Pages/Intro/GettingStarted/gettingstarted.dart';
 import 'package:lift/Pages/Auth/User/loginscreen.dart';
+import 'package:lift/Pages/Intro/SplashScreen/splashscreen.dart';
 
 import 'Constants/Colors.dart';
 
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'RideBy',
           theme: isDarkMode ? darkTheme : lightTheme,
-          home: child,
+          home: SplashScreen(),
         );
       }),
       child: const SignUpScreen(),
