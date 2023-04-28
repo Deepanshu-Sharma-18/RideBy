@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "888325636299",
+    "project_id": "rideby-d0658",
+    "storage_bucket": "rideby-d0658.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888325636299:android:ca4c577193ec1c07a05b4e",
+        "android_client_info": {
+          "package_name": "com.example.lift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888325636299-s0nih6nbb2ked0hiisue2ucfqkuufuqs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lift",
+            "certificate_hash": "530337eeb1a5e798d52cb053ca8a4669595ce859"
+          }
+        },
+        {
+          "client_id": "888325636299-tac5lli2noh5r4kb15nmasqap1ophe28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt6d74sPHLHxKGMA8e3XrSRhW6OpQbXCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888325636299-tac5lli2noh5r4kb15nmasqap1ophe28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

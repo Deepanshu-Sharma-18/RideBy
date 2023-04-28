@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lift/Constants/Colors.dart';
 import 'package:lift/Pages/Auth/User/loginscreen.dart';
+import 'package:lift/Pages/Auth/User/middleware.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       width: double.maxFinite,
       child: AnimatedSplashScreen(
         backgroundColor: Rang.black,
-        nextScreen: UserAuth(),
+        nextScreen: MiddleWare(),
         splashTransition: SplashTransition.scaleTransition,
         splash: Center(
           child: Text('RideBy',

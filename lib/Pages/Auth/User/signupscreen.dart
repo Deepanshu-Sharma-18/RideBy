@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lift/Pages/Auth/User/loginscreen.dart';
+import 'package:lift/Pages/Main/mainpage.dart';
 import 'package:lift/widgets/textfield.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -16,9 +21,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var namecontroller = TextEditingController();
   var numcontroller = TextEditingController();
   var otpcontroller = TextEditingController();
+  var recievedID = '';
 
   @override
   Widget build(BuildContext context) {
+    Future<void> getOtp() async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      auth.verifyPhoneNumber(
+          phoneNumber: '+91${numcontroller.text}',
+          verificationCompleted: (AuthCredential authCredential) async {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Phone Number Verfied')));
+          },
+          verificationFailed: (FirebaseAuthException firebaseAuthException) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(firebaseAuthException.toString())));
+          },
+          codeSent: (String verificationCode, int? forceResendingToken) {
+            recievedID = verificationCode;
+
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('OTP sent to above number')));
+          },
+          codeAutoRetrievalTimeout: (String verficationCode) {
+            if (kDebugMode) {
+              print(verficationCode);
+            }
+            if (kDebugMode) {
+              print("Timout");
+            }
+          });
+    }
+
+    Future<void> signup() async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: recievedID,
+        smsCode: otpcontroller.text,
+      );
+      await auth
+          .signInWithCredential(credential)
+          .then((value) => Get.offAll(MainScreen()));
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: InkWell(
@@ -82,7 +129,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await getOtp();
+                    },
                     child: Text(
                       'Get OTP',
                       style: GoogleFonts.montserrat(
@@ -96,6 +145,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 65.h,
                 ),
                 InkWell(
+                  onTap: () async {
+                    await signup();
+                  },
                   child: Container(
                     width: double.maxFinite,
                     height: 65.h,
@@ -129,7 +181,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        Get.to(UserAuth());
+                      },
                       child: Text(
                         'Sign In',
                         style: GoogleFonts.montserrat(

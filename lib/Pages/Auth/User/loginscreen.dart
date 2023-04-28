@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lift/Constants/Colors.dart';
+import 'package:lift/Pages/Auth/User/signupscreen.dart';
 import 'package:lift/widgets/textfield.dart';
+import 'package:get/get.dart';
 
 class UserAuth extends StatefulWidget {
   const UserAuth({super.key});
@@ -15,6 +19,56 @@ class UserAuth extends StatefulWidget {
 class _UserAuthState extends State<UserAuth> {
   final phoneController = TextEditingController();
   final pwdController = TextEditingController();
+
+  var recievedID = '';
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    pwdController.dispose();
+    super.dispose();
+  }
+
+  Future<void> getOtp() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    auth.verifyPhoneNumber(
+        phoneNumber: '+91${phoneController.text}',
+        verificationCompleted: (AuthCredential authCredential) async {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Phone Number Verfied')));
+        },
+        verificationFailed: (FirebaseAuthException firebaseAuthException) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(firebaseAuthException.toString())));
+        },
+        codeSent: (String verificationCode, int? forceResendingToken) {
+          recievedID = verificationCode;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('OTP sent to above number')));
+        },
+        codeAutoRetrievalTimeout: (String verficationCode) {
+          if (kDebugMode) {
+            print(verficationCode);
+          }
+          if (kDebugMode) {
+            print("Timout");
+          }
+        });
+  }
+
+  Future<void> signin() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: recievedID,
+      smsCode: pwdController.text,
+    );
+    await auth
+        .signInWithCredential(credential)
+        .then((value) => print('User Login In Successful'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +130,9 @@ class _UserAuthState extends State<UserAuth> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await getOtp();
+                    },
                     child: Text(
                       'Get OTP',
                       style: GoogleFonts.montserrat(
@@ -90,6 +146,9 @@ class _UserAuthState extends State<UserAuth> {
                   height: 35.h,
                 ),
                 InkWell(
+                  onTap: () async {
+                    await signin();
+                  },
                   child: Container(
                     width: double.maxFinite,
                     height: 65.h,
@@ -111,35 +170,42 @@ class _UserAuthState extends State<UserAuth> {
                 SizedBox(
                   height: 25.h,
                 ),
-                Container(
-                  height: 65.h,
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.h),
-                    color: Theme.of(context).colorScheme.onPrimary,
+                InkWell(
+                  onTap: () async {
+                    var auth = FirebaseAuth.instance;
+
+                    await auth.signInWithProvider(GoogleAuthProvider());
+                  },
+                  child: Container(
+                    height: 65.h,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.h),
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 80.w,
+                              padding: EdgeInsets.only(left: 50.w),
+                              child: Image.asset(
+                                './assets/Glogo.png',
+                                fit: BoxFit.fitWidth,
+                              )),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            'Sign In with Google',
+                            style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Rang.black),
+                          ),
+                        ]),
                   ),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                            width: 80.w,
-                            padding: EdgeInsets.only(left: 50.w),
-                            child: Image.asset(
-                              './assets/Glogo.png',
-                              fit: BoxFit.fitWidth,
-                            )),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        Text(
-                          'Sign In with Google',
-                          style: GoogleFonts.poppins(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Rang.black),
-                        ),
-                      ]),
                 ),
                 SizedBox(
                   height: 25.h,
@@ -156,7 +222,11 @@ class _UserAuthState extends State<UserAuth> {
                           color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        Get.offAll(
+                          SignUpScreen(),
+                        );
+                      },
                       child: Text(
                         'Sign up',
                         style: GoogleFonts.montserrat(
